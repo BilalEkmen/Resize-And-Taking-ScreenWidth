@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #screen{
+        width: 100px;
+        height: 100px;
+        box-shadow: 0 0 0 1px black, 0 0 0 10px white, 0 0 0 20px red;
+        margin: 30px;
+        padding-top: 30px;
+        text-align: center;
+        box-sizing: border-box;
+        font-weight: 600;
+        font-size: 20px;
+    }
+    #desktop{
+        background-color: red;
+        color: white;
+        padding: 5px;
+    }
+    #mobile{
+        background-color: green;
+        color: white;
+        padding: 5px;
+    }
+
+</style>
+<body>
+    <div id="screen"></div>
+</body>
+<script>
+    var box = document.getElementById('screen')
+    var mobileStatus = false
+    var desktopStatus = false
+    // Yeni ve boş bir div oluşturup bir değişkene atıyoruz.
+    const createDiv = document.createElement('div')
+    var mobile = document.getElementById('mobile')
+    var desktop = document.getElementById('desktop')
+
+    
+
+    // Ürettiğimiz dive id'si 'mobile' olan, içinde 'Mobile' yazmasını sağlayan kodları yazıyoruz => Sonra bu kodu Dökümanımıza ekliyoruz. ve mobile Durumunu TRUE yapıyoruz (bu elementin üretildiğine dair kontrol değişkeni).
+    // Bir if bloğu ile desktop Durumunu kontrol ediyoruz. Eğer desktop durumu TRUE ise (yani bu element üretilmiş ise) ve id'si mobile olan bir elementimiz var ise (eğer böyle bir element yoksa NULL döner) onu siliyoruz. Üretilmemiş ise kodumuz bu bloğa girmeden yoluna devam ediyor.
+    function createMobile(){
+        createDiv.setAttribute('id', 'mobile')
+        createDiv.innerHTML = 'Mobile'
+        document.body.appendChild(createDiv)
+        mobileStatus = true
+        if(desktopStatus == true && desktop != null){
+            desktop.remove()
+            desktopStatus = false
+        }
+    }
+
+    // Ürettiğimiz dive id'si 'desktop' olan, içinde 'Desktop' yazmasını sağlayan kodları yazıyoruz => Sonra bu kodu Dökümanımıza ekliyoruz. ve masaüstü Durumunu TRUE yapıyoruz (bu elementin üretildiğine dair kontrol değişkeni).
+    // Bir if bloğu ile mobile Durumunu kontrol ediyoruz. Eğer mobile durumu TRUE ise (yani bu element üretilmiş ise) ve id'si desktop olan bir elementimiz var ise (eğer böyle bir element yoksa NULL döner) onu siliyoruz. Üretilmemiş ise kodumuz bu bloğa girmeden yoluna devam ediyor.
+    function createDesktop(){
+        createDiv.setAttribute('id', 'desktop')
+        createDiv.innerHTML = 'Desktop'
+        document.body.appendChild(createDiv)
+        desktopStatus = true
+        if(mobileStatus == true && mobile != null){
+            mobile.remove()
+            mobileStatus = false
+        }
+    }
+
+    /* 
+        ********Burada sayfayı ilk açtığımızda veya yenilediğimze çalışacak kod bloklarını yazıyoruz. "78-86 satırlar" ********** 
+    */
+
+    // Başlangıçta kutunun içinde ekranın genişliğini yazdırma.
+    box.innerHTML = window.window.innerWidth + ' px'
+
+    if(window.window.innerWidth < 600){
+        // Eğer ekran genişliğimiz 600px'ten küçük ise bir mobile elementini üretmesi için methodu çağırıyoruz.
+        createMobile()
+    }else{
+        // 600px'ten küçük değilse masaüstü elementimizin oluşmasını sağlayan fonksiyonumuzu çağırıyoruz.
+        createDesktop
+    }
+    
+    // Ekranımızı etkinlik dinleyicisi ile her YENİDEN DOYUTLANDIRILDIĞINDA dinliyoruz ve her yeniden boyutlandırıldığında içindeki kod blokları çalışacak.
+    window.addEventListener('resize', (e) =>{
+        //Burada anlık ekran genişliğini alıp bir değişkene atıyoruz. Ekran her yeniden boyutlandırıldığında çalıştığı için değişkenimiz her yeniden boyutlandırıldığında değişiyor.
+        var screenWidth = window.window.innerWidth
+        // Kutumuzun içine anlık ekran genişliğini yazdırıyoruz
+        box.innerHTML = screenWidth + ' px'
+        if(screenWidth < 600 ){
+            // Ekran genişliğini kontrol ederek 600px'ten küçükse mebile element yazdırma fonksiyonumuzu çağırıyoruz.
+            createMobile()
+        }else if(screenWidth > 600 ){
+            // 600px'ten küçük değilse masaüstü element yazdırma fonksiyonumuzu çağırıyoruz.
+            createDesktop()
+        }
+    })
+
+       
+</script>
+</html>
